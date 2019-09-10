@@ -17,7 +17,7 @@ connectionsql.connect();
 
 
 function display() {
-    connectionsql.query('select * from products', function (err, res) {
+    connectionsql.query('SELECT * FROM PRODUCTS', function (err, res) {
             var table = new Table({
                 head: ['Product ID', 'Department', 'Product Name', 'Price', 'Stock Quantity'],
                 colors: true,
@@ -64,16 +64,53 @@ function buyingPrompt() {
         purchase(itemNum, quantNum);
     })
 
-    function purchase(){
+    function purchase(itemNum, quantNum) {
+
+        quantQuery = `SELECT stock_quantity FROM products where item_id = ${itemNum}`;
+
+        connectionsql.query(quantQuery, function (err, res) {
+
+            if (err) throw err;
+
+            currentStock = parseInt(res[0].stock_quantity);
+
+            if (quantNum <= currentStock) {
+
+                newQuant = currentStock - quantNum;
+
+                updateQuant(itemNum, newQuant)
+
+            } else {
+
+                console.log(`The ammount of the item selected exceeds the quantity at hand which is ${currentStock}`)
 
 
+            }
 
-        
+
+        })
+
+
     }
+
+
+    function updateQuant(itemNum, newQuant) {
+
+
+        updateQuery = `UPDATE products SET stock_quantity = ${newQuant} WHERE item_id = ${itemNum}`;
+
+        connectionsql.query(updateQuery, function (err, res) {
+
+            if (err) throw err;
+
+            console.log(`You've wasted your hard earned money enjoy`);
+
+            connectionsql.end()
+        });
+
+    };
+
 
 
 
 };
-
-
-connectionsql.end()
