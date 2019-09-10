@@ -84,6 +84,8 @@ function buyingPrompt() {
 
                 console.log(`The ammount of the item selected exceeds the quantity at hand which is ${currentStock}`)
 
+                starOver();
+
 
             }
 
@@ -94,23 +96,45 @@ function buyingPrompt() {
     }
 
 
-    function updateQuant(itemNum, newQuant) {
+};
 
+starOver = () => {
 
-        updateQuery = `UPDATE products SET stock_quantity = ${newQuant} WHERE item_id = ${itemNum}`;
+    inquirer.prompt([{
+        type: 'confirm',
+        name: 'continue',
+        message: 'Gimme More Money Now?!??',
+        default: true
+    }]).then(res => {
+        answer = res.continue;
+        if (answer === true) {
+            display();
 
-        connectionsql.query(updateQuery, function (err, res) {
+        } else {
 
-            if (err) throw err;
-
-            console.log(`You've wasted your hard earned money enjoy`);
-
+            console.log(`You'll be back`)
             connectionsql.end()
-        });
-
-    };
 
 
+        }
+    })
 
+
+
+};
+
+function updateQuant(itemNum, newQuant) {
+
+
+    updateQuery = `UPDATE products SET stock_quantity = ${newQuant} WHERE item_id = ${itemNum}`;
+
+    connectionsql.query(updateQuery, function (err, res) {
+
+        if (err) throw err;
+
+        console.log(`You've wasted your hard earned money enjoy`);
+        starOver();
+
+    });
 
 };
