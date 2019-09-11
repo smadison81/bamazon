@@ -82,7 +82,7 @@ function buyingPrompt() {
 
             } else {
 
-                console.log(`The ammount of the item selected exceeds the quantity at hand which is ${currentStock}`)
+                console.log(colors.red(`The ammount of the item selected exceeds the quantity at hand which is ${currentStock}`))
 
                 starOver();
 
@@ -112,7 +112,7 @@ starOver = () => {
 
         } else {
 
-            console.log(`You'll be back`)
+            console.log(colors.yellow(`You'll be back`))
             connectionsql.end()
 
 
@@ -132,7 +132,7 @@ function updateQuant(itemNum, newQuant) {
 
         if (err) throw err;
 
-        console.log(`You've wasted your hard earned money enjoy`);
+        console.log(colors.yellow((`You've wasted your hard earned money enjoy`));
         starOver();
 
     });
